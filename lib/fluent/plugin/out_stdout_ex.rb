@@ -16,8 +16,8 @@
 #    limitations under the License.
 #
 module Fluent
-  class StdoutOutput < Output
-    Plugin.register_output('stdout', self)
+  class StdoutExOutput < Output
+    Plugin.register_output('stdout_ex', self)
 
     OUTPUT_PROCS = {
       :json => Proc.new {|record| Yajl.dump(record) },
@@ -34,15 +34,23 @@ module Fluent
         raise ConfigError, "stdout output output_type should be 'json' or 'hash'"
       end
     end
+    config_param :format, :type => :string, :default => nil
 
     def configure(conf)
       super
       @output_proc = OUTPUT_PROCS[@output_type]
+      @format_proc =
+        if @format == "ltsv"
+          Proc.new {|time, tag, record| "current_time:#{Time.now.localtime}\ttime:#{Time.at(time).localtime}\ttag:#{tag}\trecord:#{@output_proc.call(record)}\n" }
+        else
+          # [info]: is a fake ;-)
+          Proc.new {|time, tag, record| "#{Time.now.localtime} [info]: #{Time.at(time).localtime} #{tag}: #{@output_proc.call(record)}\n" }
+        end
     end
 
     def emit(tag, es, chain)
       es.each {|time,record|
-        $log.write "#{Time.at(time).localtime} #{tag}: #{@output_proc.call(record)}\n"
+        $log.write @format_proc.call(time, tag, record)
       }
       $log.flush
 
