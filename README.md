@@ -17,7 +17,7 @@ this plugin outputs log messages as:
 ```
 
 where the first time expresses the current time of *logging*, and the second time expresses the time field of messages, i.e., 
-the time when the message is created or, the time written in application logs.
+the time when the message is created, or the time written in application logs.
 
 This behavior is very useful because we can see the latency between receiving (logging) and sending (creating) of messages.
 
