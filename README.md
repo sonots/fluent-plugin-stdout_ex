@@ -1,4 +1,7 @@
+**Recent built-in stdout plugin supports formatter. This plugin is not longer needed.**
+
 # fluent-plugin-stdout_ex
+
 
 Fluentd out\_stdout extension
 
