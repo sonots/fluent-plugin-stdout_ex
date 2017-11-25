@@ -1,4 +1,4 @@
-**Recent built-in stdout plugin supports formatter. This plugin is not longer needed.**
+**Recent built-in stdout plugin supports formatter. This plugin is no longer needed.**
 
 # fluent-plugin-stdout_ex
 
